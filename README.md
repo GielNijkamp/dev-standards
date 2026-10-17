@@ -6,6 +6,8 @@ One set of rules for every project, on laptop and phone.
 - `install.sh`: writes the rules into `~/.claude/CLAUDE.md` and each repo's `CLAUDE.md`, and turns off Claude's commit/PR attribution in `~/.claude/settings.json` and each repo's `.claude/settings.json`.
 - `publish-repos.sh`: pushes local-only repos to GitHub as private repos.
 - `post-move.sh`: fixes dotfiles links, Claude Code history, virtualenvs and direnv after the ~/repos reorganisation.
+- `new-project.sh`: creates a new private client repo from `project-template/`.
+- `project-template/`: the client repo scaffold. It holds the capture rules, the skill-by-skill storage map, issue forms, PR template, labels, CI checks, and `docs/deliverables/` for the 13 client deliverables.
 - `apply-repos.sh`: one-time run for `~/repos`. Publishes your own projects privately, makes public ones private, opens a standards PR in each, installs the global file.
 
 ## First run
@@ -25,6 +27,24 @@ The standards PRs are made in a temporary worktree. Your current branch and unco
 
 1. Edit `standards.md` on a branch, open a PR in this repo, merge.
 2. Run `./install.sh --global --repos ~/repos --only "<repos>" --pr`.
+
+## New client project
+
+```bash
+cd ~/repos/tooling/dev-standards
+./new-project.sh bakkerij-forecast --owner tovy-eu --skills
+./new-project.sh test-run --dry-run      # local only, to look at the scaffold
+```
+
+What the template adds on top of the standards block:
+
+- **Capture rules in `CLAUDE.md`.** Every fact a deliverable needs lands in the repo while you work.
+- **`docs/agents/capture.md`.** What each Matt Pocock skill stores extra, and where. For example, `/to-spec` adds numbered acceptance criteria, `/triage` gates change requests on an approval link, and `/diagnosing-bugs` writes an ops learning.
+- **`docs/agents/*`.** Preset for GitHub Issues, so `/setup-matt-pocock-skills` isn't needed.
+- **Two project skills.** `/capture` logs one fact as the right labelled issue. `/capture-review` is the weekly review.
+- **Issue forms** for change request, direction change, decision, tech debt, manual step, ops learning and access grant.
+- **A PR template** with a Capture section, and `CODING_STANDARDS.md` so `/code-review` flags missed captures.
+- **CI (`capture-checks.yml`).** PRs must link an issue and fill in Capture, TODO markers need an issue, gitleaks runs, and change requests can't be marked ready or done without an approval link.
 
 ## Matt Pocock's skills (per repo, once)
 

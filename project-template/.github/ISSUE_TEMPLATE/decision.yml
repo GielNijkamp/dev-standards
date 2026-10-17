@@ -1,0 +1,24 @@
+name: Decision
+description: A decision that isn't big enough for an ADR, but someone will ask about later.
+title: "Decision: "
+labels: [decision]
+body:
+  - type: textarea
+    id: decision
+    attributes:
+      label: Decision
+      description: What we decided, and why, in one or two lines.
+    validations:
+      required: true
+  - type: input
+    id: by
+    attributes:
+      label: Decided by and when
+      placeholder: Name, YYYY-MM-DD
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source
+      description: Link to the email, transcript, PR or issue.

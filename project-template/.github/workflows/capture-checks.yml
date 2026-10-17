@@ -1,0 +1,128 @@
+name: capture-checks
+
+# Mechanical capture rules. The judgement calls live in CODING_STANDARDS.md for /code-review.
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+  issues:
+    types: [labeled, closed]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: read
+
+jobs:
+  pr-capture:
+    name: PR links an issue and fills in Capture
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const body = pr.body || '';
+            const branch = pr.head.ref;
+            const exempt = /^(docs\/weekly-|chore\/dev-standards|chore\/mattpocock-skills)/.test(branch);
+            const errors = [];
+
+            if (!exempt && !/\b(closes|fixes|resolves|refs)\s+#\d+/i.test(body)) {
+              errors.push('Link the ticket: add "Closes #<n>" (or "Refs #<n>").');
+            }
+
+            const section = body.split(/^## Capture\s*$/m)[1];
+            if (!section) {
+              if (!exempt) errors.push('The "## Capture" section is missing. Use the PR template.');
+            } else {
+              const lines = section.split(/^## /m)[0].split('\n');
+              const ticked = lines.filter(l => /^\s*- \[[xX]\]/.test(l));
+              const none = ticked.filter(l => /none of the above/i.test(l));
+              const real = ticked.filter(l => !/none of the above/i.test(l));
+              if (ticked.length === 0) errors.push('Capture: tick at least one box, or "None of the above".');
+              if (none.length && real.length) errors.push('Capture: "None of the above" is ticked together with other boxes.');
+              const ref = /#\d+|docs\/|\b[\w.\/-]+\.(md|ya?ml|json|tf|sql|py|ts|js)\b|https?:\/\//;
+              for (const l of real) {
+                if (!ref.test(l.split(/[:→]/).slice(1).join(':'))) {
+                  errors.push(`Capture: add an issue number or path after: ${l.trim()}`);
+                }
+              }
+            }
+
+            if (errors.length) core.setFailed(errors.join('\n'));
+            else core.info('Capture section OK');
+
+  todo-markers:
+    name: TODO markers link an issue
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check added lines
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          bad=$(git diff --unified=0 "$BASE"...HEAD -- . ':(exclude)*.md' \
+            | grep -E '^\+[^+]' \
+            | grep -E '\b(TODO|FIXME|HACK|XXX)\b' \
+            | grep -vE '#[0-9]+' || true)
+          if [ -n "$bad" ]; then
+            echo "These markers need an issue, e.g. TODO(debt): retry later #42"
+            echo "$bad"
+            exit 1
+          fi
+          echo "No unlinked markers"
+
+  secrets:
+    name: No secrets in the diff
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: gitleaks
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          VERSION: 8.18.4
+        run: |
+          curl -sSL "https://github.com/gitleaks/gitleaks/releases/download/v${VERSION}/gitleaks_${VERSION}_linux_x64.tar.gz" | tar -xz gitleaks
+          ./gitleaks detect --source . --log-opts="$BASE..HEAD" --redact --no-banner
+
+  approval-gate:
+    name: Change requests need an approval link
+    if: github.event_name == 'issues'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const labels = issue.labels.map(l => l.name);
+            const gated = labels.some(l => l === 'change-request' || l === 'direction-change');
+            if (!gated) return;
+
+            const m = (issue.body || '').match(/### Client approval link\s*\n+([^\n]*)/);
+            const link = m ? m[1].trim() : '';
+            const approved = link && link !== '_No response_' && /https?:\/\/|#\d+/.test(link);
+            if (approved) return;
+
+            const { owner, repo } = context.repo;
+            const number = issue.number;
+            const note = 'Blocked: fill in **Client approval link** first (a link to the approver\'s written yes).';
+
+            if (context.payload.action === 'labeled') {
+              const added = context.payload.label.name;
+              if (added === 'ready-for-agent' || added === 'ready-for-human') {
+                await github.rest.issues.removeLabel({ owner, repo, issue_number: number, name: added });
+                await github.rest.issues.createComment({ owner, repo, issue_number: number, body: `${note} Removed \`${added}\`.` });
+              }
+            }
+
+            if (context.payload.action === 'closed' && issue.state_reason === 'completed') {
+              await github.rest.issues.update({ owner, repo, issue_number: number, state: 'open' });
+              await github.rest.issues.createComment({ owner, repo, issue_number: number, body: `${note} Reopened. Close as "not planned" if the client said no.` });
+            }
