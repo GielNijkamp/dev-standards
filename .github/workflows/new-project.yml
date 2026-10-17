@@ -1,0 +1,66 @@
+name: new-project
+
+# Creates a new private repo from project-template/ by running new-project.sh.
+# Lets any session with access to this repo (phone, claude.ai, Telegram later) create repos
+# without holding a token itself. The token lives only in the NEW_PROJECT_TOKEN secret.
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: Repo name (letters, digits, . _ -)
+        required: true
+        type: string
+      owner:
+        description: GitHub owner (org or user)
+        required: true
+        default: tovy-eu
+        type: string
+      skills:
+        description: Install mattpocock/skills via a PR
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: new-project-${{ inputs.owner }}-${{ inputs.name }}
+  cancel-in-progress: false
+
+jobs:
+  create:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate input
+        env:
+          NAME: ${{ inputs.name }}
+          OWNER: ${{ inputs.owner }}
+        run: |
+          [[ "$NAME" =~ ^[A-Za-z0-9._-]+$ ]] || { echo "Invalid name: $NAME"; exit 1; }
+          [[ "$OWNER" =~ ^[A-Za-z0-9-]+$ ]] || { echo "Invalid owner: $OWNER"; exit 1; }
+
+      - name: Create repo from template
+        env:
+          GH_TOKEN: ${{ secrets.NEW_PROJECT_TOKEN }}
+          NAME: ${{ inputs.name }}
+          OWNER: ${{ inputs.owner }}
+          SKILLS: ${{ inputs.skills }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then echo "Secret NEW_PROJECT_TOKEN is not set"; exit 1; fi
+          if gh repo view "$OWNER/$NAME" >/dev/null 2>&1; then echo "$OWNER/$NAME already exists"; exit 1; fi
+          gh auth setup-git
+          git config --global user.name "Giel Nijkamp"
+          git config --global user.email "gielnijkamp@gmail.com"
+          git config --global init.defaultBranch main
+          flags=(--owner "$OWNER" --dir "$RUNNER_TEMP/repos")
+          if [ "$SKILLS" = "true" ]; then flags+=(--skills); fi
+          ./new-project.sh "$NAME" "${flags[@]}"
+          {
+            echo "## Created https://github.com/$OWNER/$NAME"
+            echo
+            echo "Next: fill in .capture/project.yaml and run /grill-with-docs."
+          } >> "$GITHUB_STEP_SUMMARY"

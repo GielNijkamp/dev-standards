@@ -97,7 +97,7 @@ fi
 
 if $do_skills; then
   git -C "$target" switch -q -c chore/mattpocock-skills
-  if (cd "$target" && npx -y skills@latest add mattpocock/skills); then
+  if (cd "$target" && npx -y skills@latest add mattpocock/skills -a claude-code -s '*' -y --copy </dev/null); then
     git -C "$target" add -A
     if git -C "$target" diff --cached --quiet; then
       echo "Skills installer changed nothing in the repo"

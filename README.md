@@ -36,6 +36,26 @@ cd ~/repos/tooling/dev-standards
 ./new-project.sh test-run --dry-run      # local only, to look at the scaffold
 ```
 
+### From your phone or a cloud session
+
+The `new-project` workflow runs the same script on GitHub. Any session that can reach this repo can start it, and it never sees a token:
+
+```bash
+gh workflow run new-project.yml -R GielNijkamp/dev-standards -f name=bakkerij-forecast -f owner=tovy-eu
+```
+
+You can also run it from the Actions tab in the GitHub app.
+
+One-time setup:
+
+1. **Create a fine-grained token.** Go to GitHub → Settings → Developer settings → Fine-grained tokens.
+    - Resource owner: `tovy-eu`. Make a second token for your own account if you also create repos there.
+    - Repository access: All repositories.
+    - Permissions: Administration, Contents, Issues and Pull requests all read/write. Metadata read.
+    - Expiry: 90 days. Set a reminder to rotate it.
+2. **Store it as a secret.** In this repo, go to Settings → Secrets and variables → Actions → New secret, and name it `NEW_PROJECT_TOKEN`. Paste it there and nowhere else.
+3. **Give Claude access to new repos.** Check that the Claude GitHub App on `tovy-eu` has access to *All repositories*, so cloud sessions can open a new repo straight away.
+
 What the template adds on top of the standards block:
 
 - **Capture rules in `CLAUDE.md`.** Every fact a deliverable needs lands in the repo while you work.
