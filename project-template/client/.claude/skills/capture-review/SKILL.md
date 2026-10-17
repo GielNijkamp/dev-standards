@@ -13,7 +13,7 @@ Read `.capture/project.yaml` and `docs/agents/capture.md` first.
 
 - this repo: issues, PRs, commits
 - Gmail label `clients/<slug>`
-- Drive folder `Clients/<slug>/Meetings`
+- Drive folder `drive_folder` from project.yaml, subfolder `Meetings`
 
 Follow `ai_processing`. If a connector is missing, skip that source and say so.
 
