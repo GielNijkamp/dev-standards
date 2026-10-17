@@ -88,8 +88,11 @@ jobs:
         env:
           BASE: ${{ github.event.pull_request.base.sha }}
           VERSION: 8.18.4
+          SHA256: ba6dbb656933921c775ee5a2d1c13a91046e7952e9d919f9bac4cec61d628e7d
         run: |
-          curl -sSL "https://github.com/gitleaks/gitleaks/releases/download/v${VERSION}/gitleaks_${VERSION}_linux_x64.tar.gz" | tar -xz gitleaks
+          curl -sSfL -o gitleaks.tgz "https://github.com/gitleaks/gitleaks/releases/download/v${VERSION}/gitleaks_${VERSION}_linux_x64.tar.gz"
+          echo "${SHA256}  gitleaks.tgz" | sha256sum -c -
+          tar -xzf gitleaks.tgz gitleaks
           ./gitleaks detect --source . --log-opts="$BASE..HEAD" --redact --no-banner
 
   approval-gate:
