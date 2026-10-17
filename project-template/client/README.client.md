@@ -1,3 +1,1 @@
-- Client-specific capture: `docs/agents/capture-client.md`.
-- Client deliverables: `docs/deliverables/`.
-- Weekly: `/capture-review`.
+- Weekly: `/capture-review` writes `docs/deliverables/`.

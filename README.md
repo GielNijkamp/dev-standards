@@ -61,19 +61,17 @@ What each kind gets on top of the standards block:
 
 | | internal | client |
 | --- | --- | --- |
-| `CLAUDE.md` capture rules, pointing only to what's in the repo | yes | yes, plus client rules |
-| `docs/agents/capture.md`: what each Matt Pocock skill stores, and where | yes | yes, plus `capture-client.md` |
-| `docs/agents/*` preset for GitHub Issues (no `/setup-matt-pocock-skills` needed) | yes | yes |
-| 17 pipeline skills (with `--skills`), via a PR | yes | yes |
-| `/capture` skill | yes | yes |
-| Issue forms: decision, tech debt, manual step, ops learning | yes | yes |
-| Issue forms: change request, direction change, access grant | | yes |
-| PR template with Capture section, `CODING_STANDARDS.md` for `/code-review` | yes | yes, plus client rules |
-| CI: PR links an issue, Capture filled in, TODOs need an issue, gitleaks | yes | yes |
-| CI: change requests need an approval link before ready or done | | yes |
-| `.capture/project.yaml` manifest | | yes |
-| `docs/deliverables/README.md` index. `/capture-review` creates the files when they have content | | yes |
+| `CLAUDE.md`: Agent skills and Capture sections | yes | plus Client capture |
+| `docs/agents/capture.md`: where each fact goes, per skill | yes | plus client types |
+| `docs/agents/issue-tracker.md` (needed by wayfinder) | yes | yes |
+| `/capture`, which also defines each issue type's fields | yes | plus client types |
+| PR template with Capture section, `CODING_STANDARDS.md` | yes | plus client rules |
+| CI: issue link, Capture filled in, TODOs linked, gitleaks | yes | plus approval gate |
+| `.capture/project.yaml`, change-request form, `/capture-review` | | yes |
 | Labels | 15 | 22 |
+| Files / lines | 11 / ~400 | 14 / ~540 |
+
+With `--skills`, a PR adds 14 pipeline skills from mattpocock/skills.
 
 ## Matt Pocock's skills (per repo, once)
 

@@ -1,51 +1,14 @@
-# Project manifest. Fill in at kickoff. Agents read this at the start of each session.
-# Never put secret values here.
-
-client:
-  name: ""            # e.g. Bakkerij Brabant BV
-  slug: ""            # e.g. bakkerij-brabant (Gmail label clients/<slug>, Drive folder Clients/<slug>)
-  github_org: ""      # where this repo lives or will be transferred to
-  receiving_admins: []  # people who take over the repo and accounts
-
+# Fill in at kickoff. No secret values.
+client: ""          # name
+slug: ""            # Gmail label clients/<slug>, Drive folder Clients/<slug>
+approver: ""        # only this person's yes counts for change requests
 contract:
-  quote_ref: ""       # Moneybird quote number
-  pricing: ""         # fixed | time-and-materials
-  terms: NLdigital Voorwaarden
-  ip_model: ""        # transfer | licence
-  ip_transfer_on: final-payment
-  preexisting_ip: []  # your own libraries and templates reused here
+  quote: ""         # Moneybird quote number
+  pricing: ""       # fixed | time-and-materials
+  ip: ""            # transfer | licence
   test_period_days: 14
-  deemed_acceptance: [no-rejection-in-test-period, production-use]
   warranty_months: 3
-  milestones: []      # - {name: "", date: YYYY-MM-DD, amount_eur: 0}
-
-people:
-  approver: ""        # the only person whose approval counts for change requests
-  stakeholders: []    # - {name: "", role: ""}
-  data_owner: ""
-  receiving_team: []
-  escalation: []      # - {level: 1, name: "", channel: "", hours: ""}
-
-environments: []      # - {name: prod, provider: gcp, account: "", region: europe-west4, url: ""}
-
-sla:
-  uptime: ""          # e.g. 99.5%
-  support_hours: ""   # e.g. weekdays 09:00-17:00 CET
-  rto: ""
-  rpo: ""
-
-support_window:
-  start: ""
-  weeks: 4
-  channel: ""
-
-data_processing:
-  personal_data: false
-  categories: []
-  dpa_signed: false   # verwerkersovereenkomst
-
-# How Claude may handle client mail and transcripts:
-#   allowed       full text
-#   redacted      names, emails, phone numbers, IBAN and BSN removed first
-#   metadata-only subject, date and participants only
+support_window_weeks: 4
+personal_data: false
+# allowed | redacted (names, emails, phones, IBAN, BSN removed) | metadata-only
 ai_processing: redacted

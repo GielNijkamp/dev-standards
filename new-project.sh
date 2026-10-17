@@ -20,9 +20,9 @@ set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
 TEMPLATE="$HERE/project-template"
 
-# Only the pipeline skills from mattpocock/skills, not the in-progress and misc ones.
+# Only the pipeline skills from mattpocock/skills.
 SKILLS=(grill-with-docs grilling grill-me domain-modeling to-spec to-tickets implement tdd codebase-design
-        code-review pr triage wayfinder diagnosing-bugs retro handoff writing-for-agents)
+        code-review pr triage wayfinder diagnosing-bugs)
 
 name=""; kind="client"; owner=""; dir=""; do_skills=false; do_protect=false; dry=false
 while [[ $# -gt 0 ]]; do
@@ -121,6 +121,9 @@ fi
 if $do_skills; then
   git -C "$target" switch -q -c chore/mattpocock-skills
   if (cd "$target" && npx -y skills@latest add mattpocock/skills -a claude-code -s "${SKILLS[@]}" -y --copy </dev/null); then
+    # Drop Codex metadata; Claude doesn't use it.
+    find "$target/.claude/skills" -path '*/agents/openai.yaml' -delete
+    find "$target/.claude/skills" -type d -name agents -empty -delete
     git -C "$target" add -A
     if git -C "$target" diff --cached --quiet; then
       echo "Skills installer changed nothing in the repo"
@@ -129,7 +132,7 @@ if $do_skills; then
       git -C "$target" push -q -u origin chore/mattpocock-skills
       (cd "$target" && gh pr create --base main --head chore/mattpocock-skills \
         --title "chore: add mattpocock skills" \
-        --body "Installs the ${#SKILLS[@]} pipeline skills from mattpocock/skills (no in-progress or misc skills), so cloud and phone sessions have them. docs/agents/ is already set by the template, so /setup-matt-pocock-skills is not needed." >/dev/null) \
+        --body "Installs ${#SKILLS[@]} pipeline skills from mattpocock/skills. The template already configures them, so /setup-matt-pocock-skills is not needed." >/dev/null) \
         && echo "Skills PR opened"
     fi
     git -C "$target" switch -q main

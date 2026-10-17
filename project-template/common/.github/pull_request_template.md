@@ -2,26 +2,23 @@ Closes #
 
 ## Summary
 
-<!-- /pr: diagram, diff-sketch or tree. Keep it short. -->
-
 ## Evidence
 
-- **Before:**
-  **After:**
+**Before:**
+**After:**
 
-## Merge Danger
+## Merge danger
 
-**Door:** <!-- one-way or two-way. One-way needs an ADR link. -->
-
-**Blast Radius:**
+**Door:** one-way (link ADR) / two-way
+**Blast radius:**
 
 ## Capture
 
-<!-- Tick every box that applies and add the issue number or path. CI checks this section. -->
+<!-- Tick what applies and add the issue number or path. -->
 
-- [ ] Decision made → ADR or `decision` issue:
-- [ ] Shortcut taken → `tech-debt` issue:
-- [ ] Change made outside the code → `manual-step` issue:
-- [ ] Fix worth remembering → `ops-learning` issue or runbook update:
-- [ ] Access or secret set up → issue (client repos: `access-grant`) or note where it lives:
+- [ ] Decision → ADR or `decision`:
+- [ ] Shortcut → `tech-debt`:
+- [ ] Change outside the code → `manual-step`:
+- [ ] Hard-won fix → `ops-learning`:
+- [ ] Access or secret set up → issue or note:
 - [ ] None of the above

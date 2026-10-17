@@ -1,7 +1,10 @@
 
-## Client repo
+## Client types
 
-This repo also has client types: `change-request`, `direction-change`, `dependency`, `access-grant` and `out-of-scope`. They are listed in `docs/agents/capture-client.md`.
+- `change-request`: Request · Source · Requested by · Impact (hours, fee, dates) · Client approval link (leave empty). Also add `enhancement` and `needs-triage`. Never mark it ready yourself.
+- `direction-change`: From · To · Why, decided by, source · Superseded items · Deliverables to update · Client approval link (leave empty)
+- `dependency`: What we need · From whom · Due date · Impact if late
+- `access-grant`: System · Identity and role · Granted by, date · Secret name and store · At handover (revoke / transfer / rotate)
+- `out-of-scope`: Ask · Who asked · Why not
 
-- A new client ask is always a `change-request` with `needs-triage` and an empty approval link. Never mark it ready.
-- A change to something already agreed is a `direction-change`, not a plain decision.
+The heading `### Client approval link` must match exactly. CI reads it.
