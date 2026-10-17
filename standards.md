@@ -46,6 +46,7 @@ These rules apply to every project, on every device, for humans and agents.
 ## Secrets
 - Never commit secrets: `.env`, `.envrc`, API keys, tokens, credentials, private keys.
 - Keep a `.env.example` with variable names and placeholder values.
+- Never ask for, accept or print secret values in a chat or log. If a value is needed, name the 1Password field Giel should fill in the 1Password app; code only uses `op://` references.
 - If a secret was committed, stop and tell Giel. Rotating the secret is the fix.
 
 ## Money and production
