@@ -96,6 +96,10 @@ for f in sys.argv[1:]:
 ' "${label_files[@]}" | while IFS=$'\t' read -r lname color desc; do
   gh label create "$lname" --color "$color" --description "$desc" --force -R "$owner/$name" >/dev/null
 done
+# Remove GitHub's default labels that the skills don't use.
+for lname in documentation duplicate "good first issue" "help wanted" invalid question; do
+  gh label delete "$lname" --yes -R "$owner/$name" >/dev/null 2>&1 || true
+done
 echo "Labels created"
 
 if $do_protect; then
