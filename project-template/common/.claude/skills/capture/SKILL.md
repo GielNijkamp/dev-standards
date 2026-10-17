@@ -1,24 +1,31 @@
 ---
 name: capture
-description: Log one project fact as the right labelled GitHub issue (decision, tech debt, manual step, ops learning, incident, risk, future). Use when the user says /capture, or when you notice something worth logging during work and the user agrees.
-argument-hint: "What happened, in a few words"
+description: Log one project fact as a labelled GitHub issue. Use on /capture, or when you notice a decision, shortcut, change outside the code, hard fix, incident or risk during work.
+argument-hint: "What happened"
 ---
 
 # Capture
 
-Turn one fact into the right record, in one step. The storage map is in `docs/agents/capture.md`.
+1. Pick the type from `docs/agents/capture.md`. A term or an ADR-worthy decision goes to `/domain-modeling` instead.
+2. Check for duplicates: `gh issue list --label <type> --search "<words>"`. Comment on an existing issue if one fits.
+3. Draft the issue with the fields below. Show it and wait for a yes.
+4. Run `gh issue create --label <type> --title ... --body ...`. Add `Part of #<n>` if it belongs to a spec or ticket.
+5. Reply with the number and title.
 
-## Process
+## Fields
 
-1. **Classify** the fact into one type from the storage map. If it is a term or an ADR-worthy decision, hand over to `/domain-modeling` instead of opening an issue.
-2. **Check for duplicates.** Run `gh issue list --label <type> --state open --search "<keywords>"`. If one exists, propose a comment on it instead.
-3. **Draft the issue.** For types with an issue form in `.github/ISSUE_TEMPLATE/`, fill in the same fields as the form. Keep it to a few lines, and use the words from `GLOSSARY.md`.
-4. **Show the draft** as type, title and body, and wait for a yes. Ask one short question if a required field is unknown.
-5. **Create it** with `gh issue create --label <type> --title ... --body ...`. Add `Part of #<n>` when it belongs to a spec or ticket.
-6. **Reply with one line:** the issue number and title.
+Use each field as a `### <name>` heading in the body.
+
+- `decision`: Decision and why · Decided by, date · Source
+- `tech-debt`: What and where · Why · Cost of leaving it · Fix and effort
+- `manual-step`: System and environment · What changed · Move into code? (yes / follow-up / no)
+- `ops-learning`: Symptom · Cause · Fix (commands) · Verify
+- `incident`: Start, end · Impact · Cause · Fix · Follow-ups
+- `risk`: Risk · Likelihood (1–5) · Impact (1–5) · Owner · Mitigation
+- `future`: Idea · Why later
 
 ## Rules
 
-- Never put a secret value in an issue. Write the secret's name and where it lives, such as `op://Clients/bakkerij/exact-api`.
-- If the fact changes an earlier decision, ADR or spec, say so, and supersede the ADR or decision.
-- Several facts at once: draft them all, confirm once, then create them.
+- No secret values. Write the name and store, such as `op://Clients/x/api-key`.
+- If it changes an earlier decision, say so and supersede it.
+- Several facts at once: draft all, confirm once.

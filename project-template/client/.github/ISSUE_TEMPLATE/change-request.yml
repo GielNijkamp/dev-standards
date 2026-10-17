@@ -1,5 +1,5 @@
 name: Change request
-description: A new or changed client ask. No work starts before the approval link is filled in.
+description: New client ask. No work before the approval link is filled in.
 title: "CR: "
 labels: [change-request, enhancement, needs-triage]
 body:
@@ -7,35 +7,28 @@ body:
     id: request
     attributes:
       label: Request
-      description: What the client asked for, in their words where possible.
     validations:
       required: true
   - type: input
     id: source
     attributes:
       label: Source
-      description: Link to the email, transcript or meeting where it was asked.
+      description: Link to the email or transcript.
     validations:
       required: true
   - type: input
     id: requested-by
     attributes:
       label: Requested by
-      placeholder: Name, role
     validations:
       required: true
   - type: textarea
     id: impact
     attributes:
       label: Impact
-      description: Hours, fee and dates. Affected specs, ADRs and acceptance criteria.
-      placeholder: |
-        Hours:
-        Fee (EUR):
-        New dates:
-        Affects:
+      placeholder: "Hours, fee, dates, affected specs"
   - type: input
     id: approval
     attributes:
       label: Client approval link
-      description: Link to the approver's written yes. Leave empty until you have it. CI blocks ready and done without it.
+      description: Link to the approver's written yes. Empty until you have it.

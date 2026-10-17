@@ -1,32 +1,18 @@
 ## Agent skills
 
-### Issue tracker
+- Issue tracker: GitHub Issues via `gh`. Details: `docs/agents/issue-tracker.md`.
+- Triage labels: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`. Categories: `bug`, `enhancement`.
+- Domain docs: `GLOSSARY.md` and `docs/adr/` at the root. `/domain-modeling` creates them when needed. Use glossary terms in code, issues and tests. Flag any conflict with an ADR.
 
-GitHub Issues in this repo, via the `gh` CLI. See `docs/agents/issue-tracker.md`.
+## Capture
 
-### Triage labels
+Facts go into the repo as they happen, not into chat. Map: `docs/agents/capture.md`.
 
-The five default triage labels. See `docs/agents/triage-labels.md`.
-
-### Domain docs
-
-Single context: `GLOSSARY.md` and `docs/adr/` at the repo root, created when first needed. See `docs/agents/domain.md`.
-
-## Capture rules
-
-Every fact we'll need later lands in the repo while we work. Chat is not storage. Where each skill stores what is listed in `docs/agents/capture.md`. Read it before running a skill.
-
-- **Store each fact in one place only:**
-  - Terms go in `GLOSSARY.md`.
-  - Hard-to-reverse decisions go in `docs/adr/`.
-  - Every other fact goes in a labelled issue: `decision`, `tech-debt`, `manual-step`, `ops-learning`, `incident`, `risk` or `future`.
-- **Use `/capture` the moment something worth logging happens:** a decision, a shortcut, a change outside the code, a fix you could forget. Propose it yourself when you notice one.
-- **Never store secret values.** Store the secret's name and where it lives.
-- **CI enforces the mechanical rules in `.github/workflows/capture-checks.yml`:**
-  - PRs must link an issue and fill in the PR template's Capture section.
-  - TODO, FIXME, HACK and XXX markers need an issue number.
-  - gitleaks runs.
-- **`/code-review` checks the judgement calls in `CODING_STANDARDS.md`.**
+- Terms go in `GLOSSARY.md`. Hard-to-reverse decisions go in `docs/adr/`. Everything else is a labelled issue.
+- Use `/capture` when a decision, shortcut, change outside the code or hard-won fix happens. Suggest it yourself.
+- Never store secret values. Store the name and where it lives.
+- CI (`capture-checks.yml`): PRs link an issue and fill in Capture. TODO markers need an issue number. gitleaks runs.
+- `/code-review` also checks `CODING_STANDARDS.md`.
 
 ## Project-specific
 

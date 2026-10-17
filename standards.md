@@ -13,7 +13,7 @@ These rules apply to every project, on every device, for humans and agents.
 - Every repo has a `CLAUDE.md` with this block plus a project-specific section.
 
 ## Workflow: plan before code (Matt Pocock skills)
-- Skills: `mattpocock/skills`, set up once per repo with `/setup-matt-pocock-skills`, using GitHub Issues as the tracker.
+- Skills: `mattpocock/skills`, with GitHub Issues as the tracker. New repos get them preconfigured from the template. Run `/setup-matt-pocock-skills` only in older repos without `docs/agents/`.
 - Use them as a pipeline, in order:
   1. `/grill-with-docs`: interview one question at a time until the plan is sharp. Record terms and decisions in docs.
   2. `/to-spec`: turn the conversation into a spec in GitHub Issues.
