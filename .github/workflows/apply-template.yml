@@ -1,0 +1,50 @@
+name: apply-template
+
+# Brings an existing repo up to the project template via one PR, by running apply-template.sh.
+
+on:
+  workflow_dispatch:
+    inputs:
+      repo:
+        description: owner/repo
+        required: true
+        type: string
+      kind:
+        description: internal or client
+        required: true
+        default: internal
+        type: choice
+        options: [internal, client]
+      skills:
+        description: Install missing pipeline skills
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: apply-template-${{ inputs.repo }}
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Apply template
+        env:
+          GH_TOKEN: ${{ secrets.NEW_PROJECT_TOKEN }}
+          REPO: ${{ inputs.repo }}
+          KIND: ${{ inputs.kind }}
+          SKILLS: ${{ inputs.skills }}
+        run: |
+          [[ "$REPO" =~ ^[A-Za-z0-9-]+/[A-Za-z0-9._-]+$ ]] || { echo "Invalid repo: $REPO"; exit 1; }
+          gh auth setup-git
+          git config --global user.name "Giel Nijkamp"
+          git config --global user.email "gielnijkamp@gmail.com"
+          flags=(--kind "$KIND")
+          if [ "$SKILLS" = "true" ]; then flags+=(--skills); fi
+          ./apply-template.sh "$REPO" "${flags[@]}" | tee -a "$GITHUB_STEP_SUMMARY"

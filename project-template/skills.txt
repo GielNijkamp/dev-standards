@@ -1,0 +1,15 @@
+# Pipeline skills from mattpocock/skills. Used by new-project.sh and apply-template.sh.
+grill-with-docs
+grilling
+grill-me
+domain-modeling
+to-spec
+to-tickets
+implement
+tdd
+codebase-design
+code-review
+pr
+triage
+wayfinder
+diagnosing-bugs

@@ -20,9 +20,8 @@ set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
 TEMPLATE="$HERE/project-template"
 
-# Only the pipeline skills from mattpocock/skills.
-SKILLS=(grill-with-docs grilling grill-me domain-modeling to-spec to-tickets implement tdd codebase-design
-        code-review pr triage wayfinder diagnosing-bugs)
+# Pipeline skills from mattpocock/skills.
+SKILLS=($(grep -v '^#' "$TEMPLATE/skills.txt"))
 
 name=""; kind="client"; owner=""; dir=""; do_skills=false; do_protect=false; dry=false
 while [[ $# -gt 0 ]]; do
