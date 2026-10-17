@@ -5,8 +5,8 @@ These rules apply to every project, on every device, for humans and agents.
 
 ## Source of truth
 - GitHub is the single source of truth. All repos are private, unless Giel explicitly made one public (website-template is public on purpose). Never change a repo's visibility without asking.
-- New project: create the private GitHub repo first (`gh repo create <name> --private --clone`), then work in the clone.
-- New client project: run `./new-project.sh <name>` from dev-standards instead. It creates the private repo from `project-template/`, with the capture rules for client deliverables. Its scaffold is the only commit that goes to `main` directly.
+- New project: always run `./new-project.sh <name>` from dev-standards, never a bare `gh repo create`. It creates the private repo from `project-template/`, including the capture rules. Its scaffold is the only commit that goes to `main` directly.
+- When an idea in a conversation turns into something to build, the agent proposes a repo name and triggers `new-project.sh` itself. If it can't run it from where it is, it gives Giel the exact command.
 - Every repo has a `CLAUDE.md` with this block plus a project-specific section.
 
 ## Workflow: plan before code (Matt Pocock skills)
