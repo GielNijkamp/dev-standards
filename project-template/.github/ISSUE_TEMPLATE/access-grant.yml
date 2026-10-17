@@ -1,0 +1,38 @@
+name: Access grant
+description: Access given to you or a service account, or a secret created. Names only, never values.
+title: "Access: "
+labels: [access-grant]
+body:
+  - type: input
+    id: system
+    attributes:
+      label: System
+      placeholder: e.g. GCP project bb-prod, Databricks workspace, Exact Online API
+    validations:
+      required: true
+  - type: input
+    id: identity
+    attributes:
+      label: Identity and role
+      placeholder: e.g. giel@tovy.eu, roles/viewer
+    validations:
+      required: true
+  - type: input
+    id: granted
+    attributes:
+      label: Granted by and date
+    validations:
+      required: true
+  - type: input
+    id: secret
+    attributes:
+      label: Secret name and store
+      description: Only if a secret was created. Name and location, never the value.
+      placeholder: e.g. op://Clients/bakkerij/exact-api
+  - type: dropdown
+    id: at-handover
+    attributes:
+      label: At handover
+      options: [revoke, transfer to client, rotate, keep]
+    validations:
+      required: true
