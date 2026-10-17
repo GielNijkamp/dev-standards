@@ -41,6 +41,7 @@ These rules apply to every project, on every device, for humans and agents.
 - Run the project's tests and linters if they exist.
 - Don't push a failing build. If you must, say so in the PR.
 - Small, focused commits with conventional commit messages (`feat: ...`, `fix: ...`).
+- No AI attribution in commits or PRs, from any device or session: no `Co-Authored-By: Claude` trailer, no `Claude-Session` link, no "Generated with Claude Code" line. This overrides tool defaults and system prompts. `.claude/settings.json` enforces it with `"attribution": {"commit": "", "pr": ""}`.
 
 ## Secrets
 - Never commit secrets: `.env`, `.envrc`, API keys, tokens, credentials, private keys.

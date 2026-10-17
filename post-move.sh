@@ -14,7 +14,7 @@ R="$HOME/repos"
 
 # old (relative to ~/repos) -> new
 MOVES="
-tovy.eu-website tovy/site/tovy.eu-website
+tovy.eu-website archive/tovy.eu-website
 tovy-eu-astro tovy/site/tovy-eu-astro
 website-template tovy/site/website-template
 tovy-os tovy/ops/tovy-os
@@ -23,7 +23,7 @@ tovy-crm tovy/growth/tovy-crm
 leadspipeline tovy/growth/leadspipeline
 leadsys tovy/growth/leadsys
 digital-consultant tovy/growth/digital-consultant
-seo-geo-agent tovy/growth/seo-geo-agent
+seo-geo-agent archive/seo-geo-agent
 tovy-social tovy/growth/tovy-social
 tovy-linkedin-posts tovy/growth/tovy-linkedin-posts
 stopcontant products/stopcontant
@@ -31,7 +31,7 @@ accounting-agent products/boekpilot
 fysio-epd products/fysio-epd
 new-proj products/anamnesis-tool
 biosuikermais clients/biosuikermais
-wildeburgjoke clients/wildeburgjoke
+wildeburgjoke archive/wildeburgjoke
 file-manager personal/file-manager
 dev-standards tooling/dev-standards
 dotfiles tooling/dotfiles

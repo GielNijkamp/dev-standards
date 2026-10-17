@@ -60,6 +60,23 @@ update_block() {
   fi
 }
 
+# Turn off Claude Code's commit and PR attribution (Co-Authored-By, "Generated with").
+update_settings() {
+  local file="$1"
+  mkdir -p "$(dirname "$file")"
+  python3 - "$file" <<'PY'
+import json, sys, pathlib
+p = pathlib.Path(sys.argv[1])
+try:
+    data = json.loads(p.read_text()) if p.exists() and p.read_text().strip() else {}
+except json.JSONDecodeError:
+    sys.exit(f"  skip: {p} is not valid JSON")
+data.pop("includeCoAuthoredBy", None)
+data["attribution"] = {"commit": "", "pr": ""}
+p.write_text(json.dumps(data, indent=2) + "\n")
+PY
+}
+
 update_gitignore() {
   local gi="$1/.gitignore"
   touch "$gi"
@@ -115,7 +132,8 @@ apply_via_pr() {
   git -C "$dir" worktree add -q -B "$BRANCH" "$wt" "origin/$base"
   update_block "$wt/CLAUDE.md" "$PROJECT_TEMPLATE"
   update_gitignore "$wt"
-  git -C "$wt" add CLAUDE.md .gitignore
+  update_settings "$wt/.claude/settings.json"
+  git -C "$wt" add CLAUDE.md .gitignore .claude/settings.json
   if git -C "$wt" diff --cached --quiet; then
     echo "  already up to date on $base"
   else
@@ -126,7 +144,7 @@ apply_via_pr() {
     else
       (cd "$wt" && gh pr create --base "$base" --head "$BRANCH" \
         --title "chore: apply dev-standards" \
-        --body "Adds the shared dev-standards block to CLAUDE.md and secret patterns to .gitignore." \
+        --body "Adds the shared dev-standards block to CLAUDE.md, secret patterns to .gitignore and the no-attribution setting to .claude/settings.json." \
         >/dev/null) && echo "  PR opened against $base" || echo "  pushed, PR creation failed"
     fi
   fi
@@ -139,6 +157,7 @@ apply_in_tree() {
   local dir="$1"
   update_block "$dir/CLAUDE.md" "$PROJECT_TEMPLATE"
   update_gitignore "$dir"
+  update_settings "$dir/.claude/settings.json"
   echo "  files updated (not committed)"
   if $do_skills; then
     (cd "$dir" && npx -y skills@latest add mattpocock/skills) \
@@ -151,7 +170,8 @@ apply_in_tree() {
 if $do_global; then
   mkdir -p "$HOME/.claude"
   update_block "$HOME/.claude/CLAUDE.md"
-  echo "Global: ~/.claude/CLAUDE.md updated"
+  update_settings "$HOME/.claude/settings.json"
+  echo "Global: ~/.claude/CLAUDE.md and settings.json updated"
 fi
 
 if [[ -n "$repos_dir" ]]; then
