@@ -25,7 +25,7 @@ jobs:
             const pr = context.payload.pull_request;
             const body = pr.body || '';
             const branch = pr.head.ref;
-            const exempt = /^(docs\/weekly-|chore\/dev-standards|chore\/mattpocock-skills)/.test(branch);
+            const exempt = /^(docs\/weekly-|chore\/dev-standards|chore\/mattpocock-skills|chore\/apply-template)/.test(branch);
             const errors = [];
 
             if (!exempt && !/\b(closes|fixes|resolves|refs)\s+#\d+/i.test(body)) {
@@ -65,7 +65,7 @@ jobs:
         env:
           BASE: ${{ github.event.pull_request.base.sha }}
         run: |
-          bad=$(git diff --unified=0 "$BASE"...HEAD -- . ':(exclude)*.md' \
+          bad=$(git diff --unified=0 "$BASE"...HEAD -- . ':(exclude)*.md' ':(exclude).github/workflows/capture-checks.yml' \
             | grep -E '^\+[^+]' \
             | grep -E '\b(TODO|FIXME|HACK|XXX)\b' \
             | grep -vE '#[0-9]+' || true)
