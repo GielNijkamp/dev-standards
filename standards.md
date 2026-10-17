@@ -5,8 +5,11 @@ These rules apply to every project, on every device, for humans and agents.
 
 ## Source of truth
 - GitHub is the single source of truth. All repos are private, unless Giel explicitly made one public (website-template is public on purpose). Never change a repo's visibility without asking.
-- New project: always run `./new-project.sh <name>` from dev-standards, never a bare `gh repo create`. It creates the private repo from `project-template/`, including the capture rules. Its scaffold is the only commit that goes to `main` directly.
-- When an idea in a conversation turns into something to build, the agent proposes a repo name and triggers `new-project.sh` itself. Where it can't run the script, such as a cloud or phone session, it triggers the `new-project` workflow in dev-standards: `gh workflow run new-project.yml -R GielNijkamp/dev-standards -f name=<name> -f owner=tovy-eu`. If GraphQL is blocked, it uses the REST `dispatches` endpoint instead. Only when both fail does it give Giel the exact command. After the repo exists, the agent attaches it to the session and continues there.
+- New project: always run `./new-project.sh <name> --kind client|internal` from dev-standards, never a bare `gh repo create`.
+    - `client` is for paid client work. It adds the change-request gate, the deliverables and `/capture-review`.
+    - `internal` is for everything else.
+    - The script creates the private repo from `project-template/`. Its scaffold is the only commit that goes to `main` directly.
+- When an idea in a conversation turns into something to build, the agent proposes a repo name and a kind, and triggers `new-project.sh` itself. Where it can't run the script, such as a cloud or phone session, it triggers the `new-project` workflow in dev-standards: `gh workflow run new-project.yml -R GielNijkamp/dev-standards -f name=<name> -f kind=<kind> -f owner=tovy-eu`. If GraphQL is blocked, it uses the REST `dispatches` endpoint instead. Only when both fail does it give Giel the exact command. After the repo exists, the agent attaches it to the session and continues there.
 - Every repo has a `CLAUDE.md` with this block plus a project-specific section.
 
 ## Workflow: plan before code (Matt Pocock skills)

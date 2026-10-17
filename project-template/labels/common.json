@@ -1,0 +1,17 @@
+[
+  {"name": "scope", "color": "0e8a16", "description": "In-scope work: a spec"},
+  {"name": "future", "color": "c5def5", "description": "Parked for later; roadmap candidate"},
+  {"name": "decision", "color": "5319e7", "description": "Decision below the ADR bar, or an agreed number"},
+  {"name": "tech-debt", "color": "f9d0c4", "description": "Shortcut or known limitation we live with"},
+  {"name": "manual-step", "color": "e99695", "description": "Change made outside the code"},
+  {"name": "ops-learning", "color": "0052cc", "description": "Fix worth remembering"},
+  {"name": "incident", "color": "b60205", "description": "Outage or failed deploy"},
+  {"name": "risk", "color": "e4e669", "description": "Risk with likelihood, impact, owner"},
+  {"name": "bug", "color": "d73a4a", "description": "Something is broken"},
+  {"name": "enhancement", "color": "a2eeef", "description": "New feature or improvement"},
+  {"name": "needs-triage", "color": "ededed", "description": "Maintainer needs to evaluate"},
+  {"name": "needs-info", "color": "ededed", "description": "Waiting on reporter for more information"},
+  {"name": "ready-for-agent", "color": "0e8a16", "description": "Fully specified, ready for an agent"},
+  {"name": "ready-for-human", "color": "0e8a16", "description": "Needs human implementation"},
+  {"name": "wontfix", "color": "ffffff", "description": "Will not be actioned"}
+]

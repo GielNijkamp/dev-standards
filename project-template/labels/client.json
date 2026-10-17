@@ -1,0 +1,9 @@
+[
+  {"name": "out-of-scope", "color": "bfdadc", "description": "Excluded on purpose; listed in the SOW"},
+  {"name": "change-request", "color": "d93f0b", "description": "New client ask; needs an approval link before work starts"},
+  {"name": "direction-change", "color": "b60205", "description": "Earlier decision or scope changes direction"},
+  {"name": "dependency", "color": "fbca04", "description": "Something we need or assume from the client, with owner and date"},
+  {"name": "access-grant", "color": "006b75", "description": "Access or secret set up; names only"},
+  {"name": "sev:blocking", "color": "b60205", "description": "Blocks acceptance"},
+  {"name": "sev:minor", "color": "fbca04", "description": "Does not block acceptance"}
+]

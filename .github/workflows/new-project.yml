@@ -11,6 +11,12 @@ on:
         description: Repo name (letters, digits, . _ -)
         required: true
         type: string
+      kind:
+        description: client (capture for client deliverables) or internal (lean)
+        required: true
+        default: client
+        type: choice
+        options: [client, internal]
       owner:
         description: GitHub owner (org or user)
         required: true
@@ -48,6 +54,7 @@ jobs:
           GH_TOKEN: ${{ secrets.NEW_PROJECT_TOKEN }}
           NAME: ${{ inputs.name }}
           OWNER: ${{ inputs.owner }}
+          KIND: ${{ inputs.kind }}
           SKILLS: ${{ inputs.skills }}
         run: |
           if [ -z "$GH_TOKEN" ]; then echo "Secret NEW_PROJECT_TOKEN is not set"; exit 1; fi
@@ -56,11 +63,11 @@ jobs:
           git config --global user.name "Giel Nijkamp"
           git config --global user.email "gielnijkamp@gmail.com"
           git config --global init.defaultBranch main
-          flags=(--owner "$OWNER" --dir "$RUNNER_TEMP/repos")
+          flags=(--kind "$KIND" --owner "$OWNER" --dir "$RUNNER_TEMP/repos")
           if [ "$SKILLS" = "true" ]; then flags+=(--skills); fi
           ./new-project.sh "$NAME" "${flags[@]}"
           {
-            echo "## Created https://github.com/$OWNER/$NAME"
+            echo "## Created https://github.com/$OWNER/$NAME ($KIND)"
             echo
-            echo "Next: fill in .capture/project.yaml and run /grill-with-docs."
+            echo "Next: fill in the Project-specific section of CLAUDE.md (and .capture/project.yaml for client repos), then run /grill-with-docs."
           } >> "$GITHUB_STEP_SUMMARY"
