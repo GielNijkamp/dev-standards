@@ -4,7 +4,7 @@
 These rules apply to every project, on every device, for humans and agents.
 
 ## Source of truth
-- GitHub is the single source of truth. All repos are private on Giel's account.
+- GitHub is the single source of truth. All repos are private, unless Giel explicitly made one public (website-template is public on purpose). Never change a repo's visibility without asking.
 - New project: create the private GitHub repo first (`gh repo create <name> --private --clone`), then work in the clone.
 - Every repo has a `CLAUDE.md` with this block plus a project-specific section.
 
