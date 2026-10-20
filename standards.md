@@ -11,6 +11,7 @@ These rules apply to every project, on every device, for humans and agents.
     - The script creates the private repo from `project-template/`. Its scaffold is the only commit that goes to `main` directly.
 - When an idea in a conversation turns into something to build, the agent proposes a repo name and a kind, and triggers `new-project.sh` itself. Where it can't run the script, such as a cloud or phone session, it triggers the `new-project` workflow in dev-standards: `gh workflow run new-project.yml -R GielNijkamp/dev-standards -f name=<name> -f kind=<kind> -f owner=tovy-eu`. If GraphQL is blocked, it uses the REST `dispatches` endpoint instead. Only when both fail does it give Giel the exact command. After the repo exists, the agent attaches it to the session and continues there.
 - Every repo has a `CLAUDE.md` with this block plus a project-specific section.
+- Existing repo without `docs/agents/capture.md`: before real work, the agent offers to bring it up to the template with one PR. It runs `./apply-template.sh <owner/repo> --kind internal|client --skills`, or the `apply-template` workflow in dev-standards: `gh workflow run apply-template.yml -R GielNijkamp/dev-standards -f repo=<owner/repo> -f kind=<kind>`. Repos that aren't actively worked on stay as they are.
 
 ## Workflow: plan before code (Matt Pocock skills)
 - Skills: `mattpocock/skills`, with GitHub Issues as the tracker. New repos get them preconfigured from the template. Run `/setup-matt-pocock-skills` only in older repos without `docs/agents/`.

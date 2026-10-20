@@ -7,6 +7,7 @@ One set of rules for every project, on laptop and phone.
 - `publish-repos.sh`: pushes local-only repos to GitHub as private repos.
 - `post-move.sh`: fixes dotfiles links, Claude Code history, virtualenvs and direnv after the ~/repos reorganisation.
 - `new-project.sh`: creates a new private repo from `project-template/`, as `--kind client` or `--kind internal`.
+- `apply-template.sh`: brings an existing repo up to the template with one PR, keeping its own CLAUDE.md sections, docs and code.
 - `project-template/`: the repo scaffold. `common/` goes into every repo. `client/` is added for client work. `labels/` holds the labels for each kind.
 - `apply-repos.sh`: one-time run for `~/repos`. Publishes your own projects privately, makes public ones private, opens a standards PR in each, installs the global file.
 
@@ -72,6 +73,23 @@ What each kind gets on top of the standards block:
 | Files / lines | 11 / ~400 | 14 / ~540 |
 
 With `--skills`, a PR adds 14 pipeline skills from mattpocock/skills.
+
+## Existing repo
+
+Only for repos you actively work in. The rest can stay as they are.
+
+```bash
+./apply-template.sh tovy-eu/platform --kind internal --skills --dry-run   # see what changes
+./apply-template.sh tovy-eu/platform --kind internal --skills             # open the PR
+```
+
+From the phone, use the `apply-template` workflow:
+
+```bash
+gh workflow run apply-template.yml -R GielNijkamp/dev-standards -f repo=tovy-eu/platform -f kind=internal
+```
+
+It's safe to re-run. A repo that is already up to date gets no PR.
 
 ## Matt Pocock's skills (per repo, once)
 
