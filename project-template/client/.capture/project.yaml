@@ -1,6 +1,7 @@
 # Fill in at kickoff. No secret values.
 client: ""          # name
-slug: ""            # Gmail label clients/<slug>, Drive folder Clients/<slug>
+slug: ""            # Gmail label clients/<slug>
+drive_folder: ""    # client folder in the info@tovy.eu Drive, e.g. My Drive/01-projects/<slug>
 approver: ""        # only this person's yes counts for change requests
 contract:
   quote: ""         # Moneybird quote number
