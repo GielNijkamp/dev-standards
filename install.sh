@@ -92,12 +92,14 @@ install_global_agents() {
     printf '@~/.config/agents/private.md\n' >> "$md"
   fi
   if command -v claude >/dev/null; then
-    claude plugin marketplace add GielNijkamp/dev-standards >/dev/null 2>&1 \
-      || claude plugin marketplace update dev-standards >/dev/null 2>&1 || true
+    # add is a no-op when the marketplace exists, so always refresh it afterwards
+    claude plugin marketplace add GielNijkamp/dev-standards >/dev/null 2>&1 || true
+    claude plugin marketplace update dev-standards >/dev/null 2>&1 || true
     for plugin in giel socratic-skills; do
-      claude plugin install "$plugin@dev-standards" >/dev/null 2>&1 \
-        || claude plugin update "$plugin@dev-standards" >/dev/null 2>&1 \
-        || echo "  plugin: run '/plugin' in Claude Code and install $plugin@dev-standards"
+      # install is a no-op when the plugin exists, so always update afterwards
+      claude plugin install "$plugin@dev-standards" >/dev/null 2>&1 || true
+      claude plugin update "$plugin@dev-standards" >/dev/null 2>&1 \
+        || echo "  plugin: run '/plugin' in Claude Code and check $plugin@dev-standards"
     done
   else
     echo "  plugin: claude CLI not found; install giel@dev-standards later"
