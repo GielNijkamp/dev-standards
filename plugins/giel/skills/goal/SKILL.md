@@ -16,6 +16,9 @@ Use them where they fit; they live per repo, so outside a repo fall back to the 
 - Phase boundaries and long goals: /ask-matt to choose continue, new session or subagent;
   /handoff before the context runs out.
 - Skills that spawn agents (/implement-spec, /code-review, /research) run from the main session only.
+- A subquestion that needs someone other than the user: you draft the message with the Socratic
+  skills (socratic-reply, socratic-question-check, socratic-conversation); the user sends it.
+  On a reply, reread the thread and the Person context first.
 
 ## 1. Frame (you, no subagents)
 - Problem statement: one precise question, what success looks like, constraints,
@@ -55,6 +58,7 @@ Brief template:
   Chain: <one line per level, from the goal down to this subquestion>
   Objective: <one question>
   Context: <file paths, URLs, issue numbers: pointers, not pasted content>
+  Person (if one is involved): <who, how the user relates to them, the thread so far, what the user wants>
   Tools and sources: <allowed>
   Stop when: <answered, or N tool calls>
   Not yours: <neighbouring subquestions>

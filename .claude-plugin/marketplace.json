@@ -1,7 +1,21 @@
 {
   "name": "dev-standards",
-  "owner": { "name": "Giel Nijkamp" },
+  "owner": {
+    "name": "Giel Nijkamp"
+  },
   "plugins": [
-    { "name": "giel", "source": "./plugins/giel", "description": "Model routing agents and the /giel:goal skill" }
+    {
+      "name": "giel",
+      "source": "./plugins/giel",
+      "description": "Model routing agents and the /giel:goal skill"
+    },
+    {
+      "name": "socratic-skills",
+      "source": {
+        "source": "github",
+        "repo": "tovy-eu/socratic-skills"
+      },
+      "description": "socratic-reply, socratic-question-check, socratic-conversation"
+    }
   ]
 }

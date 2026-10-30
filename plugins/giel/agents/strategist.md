@@ -16,6 +16,8 @@ BREAKDOWN:
 - Complex parts: 1-3 safe-to-fail experiments instead of research.
 - A goal that means building something: say so; the main session hands it to the build pipeline.
 - Flag decisions only the user can make.
+- A subquestion that needs another person: mark it "conversation", name who and what to learn.
+  The main session drafts it with the Socratic skills; the user sends it.
 SYNTHESIS: from the worker returns: the answer, the bottleneck, conflicts resolved,
 open risks, 1-3 next actions as if-then plans, and whether another round is needed.
 Never estimate a number a worker can compute.

@@ -16,9 +16,10 @@ One set of rules for every project, on laptop and phone.
 - `plugins/giel/`: the `giel` plugin. Agents `researcher` (Sonnet), `deep-researcher` (Opus) and `strategist` (Fable), and the skill `/giel:goal` with its `lessons.md`. This repo is its marketplace (`.claude-plugin/marketplace.json`, name `dev-standards`).
 - `claude/agents/Explore.md`: replaces the built-in Explore agent with a Haiku one. A plugin can't do that, so `install.sh --global` copies it to `~/.claude/agents/`.
 - `project-template/common/.claude/settings.json`: its `env` block sets Sonnet as the default subagent model. `install.sh` merges it into global and repo settings.
-- `standards.md`: the Session start and Model routing sections.
+- `standards.md`: the Session start, Model routing and Talking to people sections.
+- `socratic-skills`: the marketplace also lists `tovy-eu/socratic-skills`, used when an agent drafts a message to a person.
 
-`./install.sh --global` installs all of it on a Mac and puts the plugin on in every repo. Turn it off in one repo with `/plugin`, or in that repo's `.claude/settings.local.json`: `{ "enabledPlugins": { "giel@dev-standards": false } }`.
+`./install.sh --global` installs all of it, both plugins included, on a Mac and puts the plugin on in every repo. Turn it off in one repo with `/plugin`, or in that repo's `.claude/settings.local.json`: `{ "enabledPlugins": { "giel@dev-standards": false } }`.
 
 Cloud sessions don't load plugins. For a repo you use there: `./apply-template.sh <owner/repo> --cloud-agents` commits the same files into `.claude/`.
 

@@ -14,6 +14,7 @@ then propose it with sources.
 Report figures as the source states them. A needed calculation: name it and its inputs
 for a worker; don't estimate.
 If only the user can know the answer, stop and return the needs-Giel block from your brief.
+Never contact people. If someone other than the user must be asked, say who and what to ask.
 Return at most 10 lines: answer, a source per claim, confidence (high/medium/low), conflicts,
 "Serves: <chain line>", "Changes the hypothesis: yes/no + one sentence".
 Never spawn subagents. Stop when answered or after 15 tool calls.
