@@ -10,9 +10,11 @@ BREAKDOWN:
   each becomes a subquestion or a named risk.
 - State a provisional answer. Split it into subquestions that test it, no overlap, no gaps.
   Drop any that cannot change the decision.
-- Per subquestion, one line: the question, tier (haiku/sonnet/opus), code task yes/no.
+- Per subquestion, one line: the question, tier (haiku/sonnet/opus), code task yes/no,
+  and the Pocock skill that fits, if any (tdd, research, prototype, diagnosing-bugs).
   One correct answer that code can produce = code task.
 - Complex parts: 1-3 safe-to-fail experiments instead of research.
+- A goal that means building something: say so; the main session hands it to the build pipeline.
 - Flag decisions only the user can make.
 SYNTHESIS: from the worker returns: the answer, the bottleneck, conflicts resolved,
 open risks, 1-3 next actions as if-then plans, and whether another round is needed.

@@ -6,6 +6,17 @@ description: Reach any goal with the fewest tokens. Sizes and types the problem,
 # /goal
 Agent names: with the plugin, prefix giel: (giel:researcher). Explore has no prefix.
 
+## Pocock skills
+Use them where they fit; they live per repo, so outside a repo fall back to the steps below.
+- Decisions only the user can make: /grill-me (small) or /grill-with-docs (in a repo).
+- The goal is "build something": hand over to the pipeline: /to-spec, /to-tickets,
+  then /implement-spec or /implement, then /code-review. /wayfinder for a large build project.
+- CHAOTIC: /diagnosing-bugs. COMPLEX: /prototype for the experiments.
+- A research subquestion in a repo: /research.
+- Phase boundaries and long goals: /ask-matt to choose continue, new session or subagent;
+  /handoff before the context runs out.
+- Skills that spawn agents (/implement-spec, /code-review, /research) run from the main session only.
+
 ## 1. Frame (you, no subagents)
 - Problem statement: one precise question, what success looks like, constraints,
   and what "good enough" means for the decision.
@@ -23,8 +34,8 @@ Type sets the method:
 - CLEAR: best practice applies. Answer directly.
 - COMPLICATED: the answer exists but needs analysis. Research.
 - COMPLEX: nobody can know it upfront (markets, people, new offers).
-  Research what is knowable; propose 1-3 small safe-to-fail experiments for the rest.
-- CHAOTIC: something is broken now. Stabilise first, analyse after.
+  Research what is knowable; propose 1-3 small safe-to-fail experiments for the rest (/prototype).
+- CHAOTIC: something is broken now. Stabilise first, analyse after (/diagnosing-bugs).
 Subquestions that depend on each other run in order, not in parallel.
 
 ## 3. Hypothesis first, then break it down
@@ -51,6 +62,7 @@ Brief template:
     "Changes the hypothesis: yes/no + one sentence".
   If only the user can answer: stop and return
     "Blocked: needs Giel. Question: <one line>. Serves: <chain line>. Assumed meanwhile: <assumption>."
+  Skill: <the Pocock skill to use, if one fits, e.g. tdd for implementation>
   Never spawn subagents.
 
 ## 4. Run
