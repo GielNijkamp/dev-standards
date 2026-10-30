@@ -20,6 +20,20 @@ Use them where they fit; they live per repo, so outside a repo fall back to the 
   skills (socratic-reply, socratic-question-check, socratic-conversation); the user sends it.
   On a reply, reread the thread and the Person context first.
 
+## 0. Goal memory (you, before framing)
+- Two files per context: goals/backlog.md and goals/learnings.md in the repo
+  (~/goals/<context>/ outside a repo). You maintain them. Missing: create them from the
+  templates at the end of this file.
+- Read both. Show the user at most 5 lines:
+  - Learnings that change this goal's frame.
+  - Overlap: the goal duplicates or depends on a candidate goal or an open action. Merge or order them.
+  - Priority: a higher-ranked candidate (order rule) that should come first, with one line why.
+    Continue with the user's goal unless they switch.
+  - Overdue next actions and check dates: ask what happened, within the max 3 questions of step 1.
+- /goal without a goal: propose the top 3 candidates by the order rule and ask which.
+- Order rule, applied in sequence: unblocked; serves the current bottleneck; nearest deadline;
+  smallest size.
+
 ## 1. Frame (you, no subagents)
 - Problem statement: one precise question, what success looks like, constraints,
   and what "good enough" means for the decision.
@@ -102,6 +116,15 @@ One of them handles the main obstacle.
 - outcome.md: the expected result and a check date. Set a reminder with the scheduling tool if
   there is one; otherwise the monthly retro lists overdue checks. On that date, ask what happened
   and for a 1-5 score, and append both to trace.tsv.
+- Update goal memory, also when the goal stops early. One write per file:
+  - backlog.md: the goal under Done with its one-line answer; its candidate row removed.
+    The if-then actions from step 7 under Next actions, with owner and due date.
+    Check dates from outcome.md. The bottleneck replaced by this goal's.
+    New goals the work revealed under Candidate goals, every field filled; re-rank by the order rule.
+  - learnings.md: facts that would change another goal's frame. Not the answer itself;
+    not lessons about running /goal (those go to lessons.md).
+  - Over 60 lines: condense Done and stale learnings.
+- When the user reports an action done or a check result, in any session: update its row.
 - Answers the user gave: store them in the repo docs or memory, so no agent asks again.
 - A correction from the user: propose one line for lessons.md in a dev-standards PR.
 - If the goal becomes something to build: propose a repo via new-project.sh.
@@ -109,3 +132,35 @@ One of them handles the main obstacle.
 ## Budget guards
 - Max 8 subagents per round. Max 2 rounds without asking.
 - No Fable on SMALL or MEDIUM goals. Opus workers only as deep-researcher or an escalation.
+
+## Templates
+backlog.md:
+```
+# Goal backlog · <context>
+Maintained by /goal. Read at the start of every goal, updated at the end.
+Order rule: unblocked; serves the bottleneck; nearest deadline; smallest size.
+
+## Bottleneck
+<one line> (<goal slug>, <date>)
+
+## Next actions
+| When (if) | I do (then) | Owner | Due | From goal | Status |
+|---|---|---|---|---|---|
+
+## Candidate goals
+| # | Goal (one line, ready to paste after /giel:goal) | Serves | Size, type | Deadline | Blocked by | From goal |
+|---|---|---|---|---|---|---|
+
+## Check dates
+| Date | Goal | Check |
+|---|---|---|
+
+## Done
+- <date> <goal slug>: <one-line answer>
+```
+learnings.md:
+```
+# Learnings · <context>
+Facts that change how future goals are framed. Maintained by /goal.
+- <date> [<goal slug>] <learning> (<source type>)
+```

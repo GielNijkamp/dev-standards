@@ -16,6 +16,7 @@ One set of rules for every project, on laptop and phone.
 - `plugins/giel/`: the `giel` plugin. Agents `researcher` (Sonnet), `deep-researcher` (Opus) and `strategist` (Fable), and the skill `/giel:goal` with its `lessons.md`. This repo is its marketplace (`.claude-plugin/marketplace.json`, name `dev-standards`).
 - `claude/agents/Explore.md`: replaces the built-in Explore agent with a Haiku one. A plugin can't do that, so `install.sh --global` copies it to `~/.claude/agents/`.
 - `project-template/common/.claude/settings.json`: its `env` block sets Sonnet as the default subagent model. `install.sh` merges it into global and repo settings.
+- Goal memory: `/giel:goal` keeps `goals/backlog.md` (bottleneck, next actions, ranked candidate goals, check dates) and `goals/learnings.md` per context. It reads both before each goal and updates them after.
 - `standards.md`: the Session start, Model routing and Talking to people sections.
 - `socratic-skills`: the marketplace also lists `tovy-eu/socratic-skills`, used when an agent drafts a message to a person.
 
