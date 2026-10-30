@@ -12,8 +12,8 @@
     {
       "name": "socratic-skills",
       "source": {
-        "source": "github",
-        "repo": "tovy-eu/socratic-skills"
+        "source": "url",
+        "url": "https://github.com/tovy-eu/socratic-skills.git"
       },
       "description": "socratic-reply, socratic-question-check, socratic-conversation"
     }
