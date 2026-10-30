@@ -1,6 +1,6 @@
 """Brings an existing repo up to the project template, keeping its own content.
 
-Usage: python3 apply.py <fresh scaffold dir> <repo dir> <skills.txt>
+Usage: python3 apply.py <fresh scaffold dir> <repo dir> <skills.txt> [--cloud-agents]
 
 - Managed files are overwritten: the capture map, issue tracker doc, our skills, the CI check
   (client: also /capture-review and the change-request form).
@@ -11,6 +11,8 @@ Usage: python3 apply.py <fresh scaffold dir> <repo dir> <skills.txt>
   ones. They go above "## Project-specific". Every other section stays.
 - Skills: mattpocock skills outside skills.txt are removed, plus Codex agents/openai.yaml files.
   Skills from other sources are left alone.
+- --cloud-agents: copies the giel plugin's agents and /goal skill plus the Explore agent into
+  .claude/, for repos used from cloud sessions (they don't load plugins). Kept in sync on every run.
 """
 
 import json
@@ -20,6 +22,8 @@ import sys
 from pathlib import Path
 
 scaffold, repo, skills_file = Path(sys.argv[1]), Path(sys.argv[2]), Path(sys.argv[3])
+cloud_agents = "--cloud-agents" in sys.argv[4:]
+standards = skills_file.resolve().parent.parent  # dev-standards root
 pipeline = {l.strip() for l in skills_file.read_text().splitlines() if l.strip() and not l.startswith("#")}
 done = []
 
@@ -80,6 +84,24 @@ for rel in REMOVE:
     if (repo / rel).exists():
         (repo / rel).unlink()
         done.append(f"removed {rel} (now in CLAUDE.md)")
+
+CLOUD_AGENTS = {  # dev-standards source -> repo destination
+    "plugins/giel/agents/researcher.md": ".claude/agents/researcher.md",
+    "plugins/giel/agents/deep-researcher.md": ".claude/agents/deep-researcher.md",
+    "plugins/giel/agents/strategist.md": ".claude/agents/strategist.md",
+    "plugins/giel/skills/goal/SKILL.md": ".claude/skills/goal/SKILL.md",
+    "plugins/giel/skills/goal/lessons.md": ".claude/skills/goal/lessons.md",
+    "claude/agents/Explore.md": ".claude/agents/Explore.md",
+}
+if cloud_agents:
+    for src_rel, dst_rel in CLOUD_AGENTS.items():
+        src, dst = standards / src_rel, repo / dst_rel
+        if dst_rel.endswith("lessons.md") and dst.exists():
+            continue  # repo's own lessons, never overwrite
+        if not dst.exists() or dst.read_text() != src.read_text():
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, dst)
+            done.append(f"wrote {dst_rel}")
 
 # CLAUDE.md: swap the managed sections, keep the rest.
 claude = repo / "CLAUDE.md"

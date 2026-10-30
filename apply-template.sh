@@ -3,10 +3,11 @@
 # Keeps the repo's own CLAUDE.md sections, docs, code and issues.
 #
 # Usage:
-#   ./apply-template.sh <owner/repo> [--kind internal|client] [--skills] [--dry-run]
+#   ./apply-template.sh <owner/repo> [--kind internal|client] [--skills] [--cloud-agents] [--dry-run]
 #
 #   --kind     internal (default) or client.
 #   --skills   Also install pipeline skills that are missing.
+#   --cloud-agents  Copy the giel agents, /goal and Explore into .claude/ (repos used from cloud sessions).
 #   --dry-run  Show what would change. No push, no labels, no PR.
 
 set -euo pipefail
@@ -16,12 +17,13 @@ TEMPLATE="$HERE/project-template"
 SKILLS=($(grep -v '^#' "$TEMPLATE/skills.txt"))
 BRANCH="chore/apply-template"
 
-slug=""; kind="internal"; do_skills=false; dry=false
+slug=""; kind="internal"; do_skills=false; dry=false; extra=()
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --kind)    kind="$2"; shift ;;
     --skills)  do_skills=true ;;
     --dry-run) dry=true ;;
+    --cloud-agents) extra+=(--cloud-agents) ;;
     -*) echo "Unknown option: $1"; exit 1 ;;
     *)  slug="$1" ;;
   esac
@@ -42,7 +44,7 @@ git -C "$tmp/$name" switch -q -c "$BRANCH"
 # A fresh scaffold of the same kind is the source of truth for managed files.
 "$HERE/new-project.sh" scaffold --kind "$kind" --dir "$tmp/scaffold" --dry-run >/dev/null
 echo "Changes for $slug ($kind):"
-python3 "$TEMPLATE/apply.py" "$tmp/scaffold/scaffold" "$tmp/$name" "$TEMPLATE/skills.txt" | sed 's/^/  /'
+python3 "$TEMPLATE/apply.py" "$tmp/scaffold/scaffold" "$tmp/$name" "$TEMPLATE/skills.txt" ${extra[@]+"${extra[@]}"} | sed 's/^/  /'
 
 # Refresh the dev-standards block, .gitignore lines and settings.
 "$HERE/install.sh" --repos "$tmp" --only "$name" >/dev/null

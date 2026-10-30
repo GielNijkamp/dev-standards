@@ -1,0 +1,7 @@
+{
+  "name": "dev-standards",
+  "owner": { "name": "Giel Nijkamp" },
+  "plugins": [
+    { "name": "giel", "source": "./plugins/giel", "description": "Model routing agents and the /giel:goal skill" }
+  ]
+}

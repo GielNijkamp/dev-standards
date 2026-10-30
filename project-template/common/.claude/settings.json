@@ -3,6 +3,10 @@
     "commit": "",
     "pr": ""
   },
+  "env": {
+    "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet",
+    "CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH": "2"
+  },
   "permissions": {
     "deny": [
       "Bash(git push --force:*)",
