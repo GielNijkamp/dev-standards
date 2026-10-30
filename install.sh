@@ -94,9 +94,11 @@ install_global_agents() {
   if command -v claude >/dev/null; then
     claude plugin marketplace add GielNijkamp/dev-standards >/dev/null 2>&1 \
       || claude plugin marketplace update dev-standards >/dev/null 2>&1 || true
-    claude plugin install giel@dev-standards >/dev/null 2>&1 \
-      || claude plugin update giel@dev-standards >/dev/null 2>&1 \
-      || echo "  plugin: run '/plugin' in Claude Code and install giel@dev-standards"
+    for plugin in giel socratic-skills; do
+      claude plugin install "$plugin@dev-standards" >/dev/null 2>&1 \
+        || claude plugin update "$plugin@dev-standards" >/dev/null 2>&1 \
+        || echo "  plugin: run '/plugin' in Claude Code and install $plugin@dev-standards"
+    done
   else
     echo "  plugin: claude CLI not found; install giel@dev-standards later"
   fi

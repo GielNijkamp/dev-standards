@@ -105,4 +105,14 @@ These rules apply to every project, on every device, for humans and agents.
   Never guess silently, never escalate it.
 - Short direct sentences. No intro, outro, filler or hype. Only what the reader needs.
 - Any goal or research question end to end: /goal (/giel:goal with the plugin).
+
+## Talking to people
+- Agents never contact anyone themselves. The main session drafts; Giel approves and sends.
+- Friendly and direct: short sentences, one clear ask, no filler.
+- Use the Socratic skills: socratic-reply to answer a message, socratic-question-check on
+  every question before it goes out, socratic-conversation to prepare or debrief a longer
+  exchange. With the plugin: /socratic-skills:<name>.
+- Before drafting, gather context: who the person is and how Giel relates to them (memory,
+  repo docs), the thread so far, what Giel wants from it, and the goal chain.
+- When a reply comes in, reread the whole thread and that context before drafting the answer.
 <!-- END dev-standards -->
