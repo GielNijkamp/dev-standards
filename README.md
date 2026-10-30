@@ -11,6 +11,19 @@ One set of rules for every project, on laptop and phone.
 - `project-template/`: the repo scaffold. `common/` goes into every repo. `client/` is added for client work. `labels/` holds the labels for each kind.
 - `apply-repos.sh`: one-time run for `~/repos`. Publishes your own projects privately, makes public ones private, opens a standards PR in each, installs the global file.
 
+## Agents and model routing
+
+- `plugins/giel/`: the `giel` plugin. Agents `researcher` (Sonnet), `deep-researcher` (Opus) and `strategist` (Fable), and the skill `/giel:goal` with its `lessons.md`. This repo is its marketplace (`.claude-plugin/marketplace.json`, name `dev-standards`).
+- `claude/agents/Explore.md`: replaces the built-in Explore agent with a Haiku one. A plugin can't do that, so `install.sh --global` copies it to `~/.claude/agents/`.
+- `project-template/common/.claude/settings.json`: its `env` block sets Sonnet as the default subagent model. `install.sh` merges it into global and repo settings.
+- `standards.md`: the Session start and Model routing sections.
+
+`./install.sh --global` installs all of it on a Mac and puts the plugin on in every repo. Turn it off in one repo with `/plugin`, or in that repo's `.claude/settings.local.json`: `{ "enabledPlugins": { "giel@dev-standards": false } }`.
+
+Cloud sessions don't load plugins. For a repo you use there: `./apply-template.sh <owner/repo> --cloud-agents` commits the same files into `.claude/`.
+
+After changing an agent or `/goal`: merge here, run `claude plugin marketplace update dev-standards` and `claude plugin update giel@dev-standards`, then rerun `apply-template.sh --cloud-agents` in cloud repos.
+
 ## First run
 
 ```bash

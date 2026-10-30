@@ -60,21 +60,46 @@ update_block() {
   fi
 }
 
-# Turn off Claude Code's commit and PR attribution (Co-Authored-By, "Generated with").
+# Turn off Claude Code's commit and PR attribution (Co-Authored-By, "Generated with")
+# and merge the template's env block (model routing defaults). Other keys stay.
 update_settings() {
   local file="$1"
   mkdir -p "$(dirname "$file")"
-  python3 - "$file" <<'PY'
+  python3 - "$file" "$HERE/project-template/common/.claude/settings.json" <<'PY'
 import json, sys, pathlib
-p = pathlib.Path(sys.argv[1])
+p, template = pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2])
 try:
     data = json.loads(p.read_text()) if p.exists() and p.read_text().strip() else {}
 except json.JSONDecodeError:
     sys.exit(f"  skip: {p} is not valid JSON")
 data.pop("includeCoAuthoredBy", None)
 data["attribution"] = {"commit": "", "pr": ""}
+data["env"] = {**data.get("env", {}), **json.loads(template.read_text()).get("env", {})}
 p.write_text(json.dumps(data, indent=2) + "\n")
 PY
+}
+
+# Global extras: Explore on Haiku, Ponytail rules, the giel plugin.
+install_global_agents() {
+  mkdir -p "$HOME/.claude/agents"
+  cp "$HERE/claude/agents/Explore.md" "$HOME/.claude/agents/Explore.md"
+  local md="$HOME/.claude/CLAUDE.md" ponytail="$HOME/.config/agents/AGENTS.md"
+  if [[ -f "$ponytail" ]] && ! grep -q 'config/agents/AGENTS.md' "$md"; then
+    printf '\n@~/.config/agents/AGENTS.md\n' >> "$md"   # outside the managed block, so later runs keep it
+  fi
+  # Private details (e.g. the employer's name) live in dotfiles, never in this public repo.
+  if [[ -f "$HOME/.config/agents/private.md" ]] && ! grep -q 'config/agents/private.md' "$md"; then
+    printf '@~/.config/agents/private.md\n' >> "$md"
+  fi
+  if command -v claude >/dev/null; then
+    claude plugin marketplace add GielNijkamp/dev-standards >/dev/null 2>&1 \
+      || claude plugin marketplace update dev-standards >/dev/null 2>&1 || true
+    claude plugin install giel@dev-standards >/dev/null 2>&1 \
+      || claude plugin update giel@dev-standards >/dev/null 2>&1 \
+      || echo "  plugin: run '/plugin' in Claude Code and install giel@dev-standards"
+  else
+    echo "  plugin: claude CLI not found; install giel@dev-standards later"
+  fi
 }
 
 update_gitignore() {
@@ -171,7 +196,8 @@ if $do_global; then
   mkdir -p "$HOME/.claude"
   update_block "$HOME/.claude/CLAUDE.md"
   update_settings "$HOME/.claude/settings.json"
-  echo "Global: ~/.claude/CLAUDE.md and settings.json updated"
+  install_global_agents
+  echo "Global: ~/.claude/CLAUDE.md, settings.json, Explore agent and giel plugin updated"
 fi
 
 if [[ -n "$repos_dir" ]]; then
