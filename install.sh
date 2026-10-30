@@ -87,6 +87,10 @@ install_global_agents() {
   if [[ -f "$ponytail" ]] && ! grep -q 'config/agents/AGENTS.md' "$md"; then
     printf '\n@~/.config/agents/AGENTS.md\n' >> "$md"   # outside the managed block, so later runs keep it
   fi
+  # Private details (e.g. the employer's name) live in dotfiles, never in this public repo.
+  if [[ -f "$HOME/.config/agents/private.md" ]] && ! grep -q 'config/agents/private.md' "$md"; then
+    printf '@~/.config/agents/private.md\n' >> "$md"
+  fi
   if command -v claude >/dev/null; then
     claude plugin marketplace add GielNijkamp/dev-standards >/dev/null 2>&1 \
       || claude plugin marketplace update dev-standards >/dev/null 2>&1 || true

@@ -70,15 +70,15 @@ These rules apply to every project, on every device, for humans and agents.
 ## Session start
 - Before the first real task of a session, ask with AskUserQuestion:
   1. Use the multi-agent framework (/goal)? Yes / No.
-  2. If yes: Tovy, Personal or Rabobank?
+  2. If yes: Tovy, Personal or Employer? Use the employer's name if the global rules give it.
   Preselect the likely answer as recommended (a tovy-eu repo: Tovy). Ask once per session.
 - Don't ask for quick questions, or in unattended runs such as scheduled tasks:
   there, no framework unless the task prompt says so.
 - No: work as a single agent; the routing rules still apply to any subagent.
 - Tovy: these standards apply in full; goals/ lives in the repo.
 - Personal: goals in `~/goals/personal/`; these standards only for code projects.
-- Rabobank: no Rabobank code, data, client or internal names in prompts, files or memory.
-  Goals in `~/goals/rabobank/`. Nothing goes to Tovy repos. Output is carried over by hand
+- Employer: no employer code, data, client or internal names in prompts, files or memory.
+  Goals in `~/goals/employer/`. Nothing goes to Tovy repos. Output is carried over by hand
   to the work laptop, which only has GitHub Copilot.
 
 ## Model routing
