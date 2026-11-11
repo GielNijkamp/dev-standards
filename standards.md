@@ -105,6 +105,8 @@ These rules apply to every project, on every device, for humans and agents.
   Never guess silently, never escalate it.
 - Short direct sentences. No intro, outro, filler or hype. Only what the reader needs.
 - Any goal or research question end to end: /goal (/giel:goal with the plugin).
+- Goal memory: goals/backlog.md and goals/learnings.md (~/goals/<context>/ outside a repo),
+  maintained by /goal. "What next?" starts there.
 
 ## Talking to people
 - Agents never contact anyone themselves. The main session drafts; Giel approves and sends.
